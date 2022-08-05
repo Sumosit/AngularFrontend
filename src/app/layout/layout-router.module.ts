@@ -3,6 +3,7 @@ import * as component from './index';
 import {NgModule} from "@angular/core";
 
 const routes: Routes = [
+  {path: '', redirectTo: 'chat', pathMatch: 'full'},
   {path: 'home', component: component.HomeComponent},
   {path: 'chat', component: component.ChatComponent},
   {path: 'users', component: component.UsersComponent}
