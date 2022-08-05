@@ -1,0 +1,106 @@
+.f-nn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  display: -moz-box;
+}
+
+.f-cc {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  display: -moz-box;
+  justify-content: center;
+  -webkit-justify-content: center;
+  align-items: center;
+  -webkit-align-items: center;
+}
+
+.f-nc {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  display: -moz-box;
+  align-items: center;
+  -webkit-align-items: center;
+}
+
+.f-ne {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  display: -moz-box;
+  align-items: flex-end;
+  -webkit-align-items: flex-end;
+}
+
+.f-en {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  display: -moz-box;
+  justify-content: flex-end;
+  -webkit-justify-content: flex-end;
+}
+
+.f-col {
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+}
+
+.a_self-start {
+  align-self: flex-start;
+  -webkit-align-self: flex-start;
+}
+
+.a_self-end {
+  align-self: flex-end;
+  -webkit-align-self: flex-end;
+}
+
+.a_self-center {
+  align-self: center;
+  -webkit-align-self: center;
+}
+
+.a_items {
+
+}
+
+.f-100 {
+  flex: 1 0 0;
+  -webkit-flex: 1 0 0;
+  -moz-box-flex: 1;
+  -ms-flex: 1 0 0;
+}
+
+.f-none {
+  flex: none;
+  -webkit-flex: none;
+  -ms-flex: none;
+}
+
+.f-wrap {
+  flex-wrap: wrap;
+}
+
+.gap-10 {
+  gap: 10px;
+  grid-gap: 10px;
+}
+
+.gap-4 {
+  gap: 4px;
+  grid-gap: 4px;
+}

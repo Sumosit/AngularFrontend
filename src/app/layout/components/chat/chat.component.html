@@ -1,0 +1,144 @@
+<div class="chat-field f-nn gap-10">
+  <div class="chat-left oy-auto b-left f-nc f-col gap-10">
+    <div class="chat-account f-cc f-col b-50per us-none fs-36" *ngFor="let user of users | slice:0:4"
+         (click)="chooseUser(user)">
+      <div *ngIf="you === user">You</div>
+      <div *ngIf="recipient === user">Rec</div>
+      <div>{{user}}</div>
+    </div>
+  </div>
+  <div class="chat b-4 f-100 f-nn f-col"
+       (dragenter)="fileDrag = true">
+    <ng-container *ngIf="fileDrag">
+      <ng-container *ngTemplateOutlet="fileDragTemp"></ng-container>
+    </ng-container>
+    <div class="chat-messages f-100 f-nn f-col oy-auto" id="chatMessage">
+      <div *ngFor="let message of chatService.messages"
+           class="b-4 f-col f-none"
+           [ngClass]="{
+           'c-message-right f-ne': message.user?.id === you,
+           'c-message-left a_self-start': message.user?.id === recipient}">
+        <div class="c-message-imgs f-nn f-wrap gap-10" *ngIf="message?.imgIds.length > 0">
+          <div class="c-message-img b-12" *ngFor="let img of message.imgIds; index as i"
+               [id]="img"
+               (click)="openMedia(img)"
+               [ngStyle]="{
+             'background': 'url(http://localhost:8080/files/' + img + ') center center',
+             'background-repeat': 'no-repeat',
+             'background-size': 'cover',
+             'grid-area': 'img' + i,
+             'height': i === 0 ? '320px' : '100px',
+             'width': i === 0 ? '320px' : '100px'
+             }"></div>
+        </div>
+        <div class="c-message-text a_self-end" [innerHTML]="message.message" *ngIf="message?.message"></div>
+      </div>
+    </div>
+    <form class="chat-form f-none" [formGroup]="formChat" (ngSubmit)="sendChatMessage()">
+      <div class="c-message-inst f-nn">
+        <label for="media" *ngIf="filesUploaded.length === 0">
+          <input id="media" type="file" multiple style="display: none"
+                 (change)="selectFile($event)">
+          <svg class="us-none" id="Layer_1" height="512" viewBox="0 0 24 24" width="512"
+               xmlns="http://www.w3.org/2000/svg"
+               data-name="Layer 1">
+            <path
+              d="m12 0a12 12 0 1 0 12 12 12.013 12.013 0 0 0 -12-12zm0 22a10 10 0 1 1 10-10 10.011 10.011 0 0 1 -10 10zm5-10a1 1 0 0 1 -1 1h-3v3a1 1 0 0 1 -2 0v-3h-3a1 1 0 0 1 0-2h3v-3a1 1 0 0 1 2 0v3h3a1 1 0 0 1 1 1z"/>
+          </svg>
+        </label>
+      </div>
+      <div class="chat-input f-cc">
+  <textarea @keydown.enter.exact.prevent
+            (keydown.enter.shift)="'\n'"
+            (keyup.enter)="sendChatMessage()"
+            class="chat-message"
+            formControlName="chatMessage" name="message"></textarea>
+<!--        <input class="b-4" formControlName="chatMessage" name="message" placeholder="Введите сообщение"/>-->
+      </div>
+    </form>
+  </div>
+  <div class="chat-right oy-auto b-right f-nc f-col gap-10">
+    <div class="chat-account f-cc f-col b-50per us-none fs-36" *ngFor="let user of users | slice:4:8"
+         (click)="chooseUser(user)">
+      <div *ngIf="you === user">You</div>
+      <div *ngIf="recipient === user">Rec</div>
+      <div>{{user}}</div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-upload-field f-cc"
+     *ngIf="selectedFiles?.length > 0"
+     (click)="clearFiles(); fileDrag = false">
+  <div class="modal-upload b-12" (click)="$event.stopPropagation()">
+    <div class="c-message-imgs f-nn f-wrap gap-10">
+      <div class="c-message-img b-12"
+           *ngFor="let file of selectedFiles; index as i"
+           [ngStyle]="{
+             'grid-area': 'img' + i,
+             'height': i === 0 ? '200px' : '80px',
+             'width': i === 0 ? '100%' : '80px',
+             'background': 'url(http://localhost:8080/files/' + filesUploaded?.[i] + ') center center',
+             'background-repeat': 'no-repeat',
+             'background-size': 'cover'
+             }">
+        <app-loading-block *ngIf="!filesUploaded?.[i]"></app-loading-block>
+      </div>
+    </div>
+    <form class="chat-input f-cc"
+          [formGroup]="formChat"
+          (ngSubmit)="sendChatMessageImages()">
+      <input
+        class="b-4"
+        id="images-input"
+        formControlName="chatMessage"
+        name="message"
+        placeholder="Введите сообщение"/>
+    </form>
+  </div>
+</div>
+
+<ng-template #fileDragTemp>
+  <label class="file-drag f-cc gap-4" for="file-drag"
+         (dragover)="onDragOver($event)"
+         (dragleave)="fileDrag = false"
+         (drop)="onDropSuccess($event)">
+    <span>Drag and drop file here</span>
+    <svg class="svg" (click)="fileDrag = false" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="20"
+         height="20">
+      <path
+        d="M16,8a1,1,0,0,0-1.414,0L12,10.586,9.414,8A1,1,0,0,0,8,9.414L10.586,12,8,14.586A1,1,0,0,0,9.414,16L12,13.414,14.586,16A1,1,0,0,0,16,14.586L13.414,12,16,9.414A1,1,0,0,0,16,8Z"/>
+      <path d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z"/>
+    </svg>
+    <input id="file-drag" type="file" multiple
+           style="display: none"
+           (change)="selectFile($event)">
+  </label>
+</ng-template>
+
+<div class="modal-media f-cc"
+     *ngIf="modalMedia"
+     (click)="modalMedia = false">
+  <div class="modal_media-options f-nn f-col gap-10" (click)="$event.stopPropagation()">
+    <a [href]="'http://localhost:8080/files/' + modalMediaLink">
+      <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="20" height="20">
+        <path
+          d="M9.878,18.122a3,3,0,0,0,4.244,0l3.211-3.211A1,1,0,0,0,15.919,13.5l-2.926,2.927L13,1a1,1,0,0,0-1-1h0a1,1,0,0,0-1,1l-.009,15.408L8.081,13.5a1,1,0,0,0-1.414,1.415Z"/>
+        <path
+          d="M23,16h0a1,1,0,0,0-1,1v4a1,1,0,0,1-1,1H3a1,1,0,0,1-1-1V17a1,1,0,0,0-1-1H1a1,1,0,0,0-1,1v4a3,3,0,0,0,3,3H21a3,3,0,0,0,3-3V17A1,1,0,0,0,23,16Z"/>
+      </svg>
+    </a>
+    <svg (click)="modalMedia = false" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="20"
+         height="20">
+      <path
+        d="M16,8a1,1,0,0,0-1.414,0L12,10.586,9.414,8A1,1,0,0,0,8,9.414L10.586,12,8,14.586A1,1,0,0,0,9.414,16L12,13.414,14.586,16A1,1,0,0,0,16,14.586L13.414,12,16,9.414A1,1,0,0,0,16,8Z"/>
+      <path d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z"/>
+    </svg>
+  </div>
+  <img class="modal-media-img" alt=""
+       id="media-full"
+       [ngStyle]="{
+       left: getWidth()
+       }"
+       [src]="'http://localhost:8080/files/' + modalMediaLink"/>
+</div>

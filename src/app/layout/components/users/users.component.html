@@ -1,0 +1,71 @@
+<div class="users-field f-nn f-col">
+  <div class="f-cc t-col1">You are an admin</div>
+  <div class="mt-10 f-cc gap-10">
+    <form class="f-cc gap-4">
+      <input class="input-1 b-4" placeholder="Enter username" type="text" name="username"
+             [(ngModel)]="username"/>
+      <button class="button-1 c-pointer b-4" (click)="addUser()">Save</button>
+    </form>
+    <form class="f-cc gap-4">
+      <input class="input-1 b-4" placeholder="Enter a name to search" type="text" name="username"
+             [(ngModel)]="searchName"/>
+      <button class="button-1 c-pointer b-4" (click)="searchName = ''">Clear</button>
+    </form>
+  </div>
+  <div class="mt-10 f-nn f-100 gap-10" cdkDropListGroup>
+    <div class="users us-none f-nn f-col f-100 gap-4"
+         id="users"
+         cdkDropList
+         [cdkDropListData]="users"
+         (cdkDropListDropped)="drop($event)">
+      <div class="f-cc t-col1">Users</div>
+      <div class="f-nc c-pointer" *ngFor="let user of searchUsers(sort(users))"
+           [cdkDragData]="user"
+           cdkDrag>
+        <div class="f-100 f-nc t-ellipsis"><span>{{user.id}}.</span><span>{{user.username}}</span></div>
+        <svg class="svg" *ngIf="user.id" (click)="deleteUser(user.id)" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="16" height="16">
+          <path
+            d="M16,8a1,1,0,0,0-1.414,0L12,10.586,9.414,8A1,1,0,0,0,8,9.414L10.586,12,8,14.586A1,1,0,0,0,9.414,16L12,13.414,14.586,16A1,1,0,0,0,16,14.586L13.414,12,16,9.414A1,1,0,0,0,16,8Z"/>
+          <path
+            d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z"/>
+        </svg>
+      </div>
+    </div>
+    <div class="users us-none f-nn f-col f-100 gap-4"
+         id="moderators"
+         cdkDropList
+         [cdkDropListData]="moderators"
+         (cdkDropListDropped)="drop($event)">
+      <div class="f-cc t-col1">Moderators</div>
+      <div class="f-nc c-pointer" *ngFor="let user of searchUsers(sort(moderators))"
+           [cdkDragData]="user"
+           cdkDrag>
+        <div class="f-100 f-nc t-ellipsis"><span>{{user.id}}.</span><span>{{user.username}}</span></div>
+        <svg class="svg" *ngIf="user.id" (click)="deleteUser(user.id)" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="16" height="16">
+          <path
+            d="M16,8a1,1,0,0,0-1.414,0L12,10.586,9.414,8A1,1,0,0,0,8,9.414L10.586,12,8,14.586A1,1,0,0,0,9.414,16L12,13.414,14.586,16A1,1,0,0,0,16,14.586L13.414,12,16,9.414A1,1,0,0,0,16,8Z"/>
+          <path
+            d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z"/>
+        </svg>
+      </div>
+    </div>
+    <div class="users us-none f-nn f-col f-100 gap-4"
+         id="banned"
+         cdkDropList
+         [cdkDropListData]="banned"
+         (cdkDropListDropped)="drop($event)">
+      <div class="f-cc t-col1">Banned</div>
+      <div class="f-nc c-pointer" *ngFor="let user of searchUsers(sort(banned))"
+           [cdkDragData]="user"
+           cdkDrag>
+        <div class="f-100 f-nc t-ellipsis"><span>{{user.id}}.</span><span>{{user.username}}</span></div>
+        <svg class="svg" *ngIf="user.id" (click)="deleteUser(user.id)" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="16" height="16">
+          <path
+            d="M16,8a1,1,0,0,0-1.414,0L12,10.586,9.414,8A1,1,0,0,0,8,9.414L10.586,12,8,14.586A1,1,0,0,0,9.414,16L12,13.414,14.586,16A1,1,0,0,0,16,14.586L13.414,12,16,9.414A1,1,0,0,0,16,8Z"/>
+          <path
+            d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>

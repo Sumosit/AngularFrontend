@@ -1,0 +1,14 @@
+@import "colors";
+
+.button-1 {
+  height: 36px;
+  padding: 0 10px;
+  color: $white;
+  border: 1px solid $pink1;
+  background: none;
+
+  &:hover {
+    transition: all 0.3s;
+    background: $pink3;
+  }
+}

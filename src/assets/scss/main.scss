@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  font-style: normal;
+  font-family: 'Maven Pro', sans-serif;
+
+  ::-webkit-scrollbar {
+    width: 4px;
+    background-color: rgba(#ffffff, 0);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(#ffffff, 0.5);
+  }
+}
+
+body {
+  background: #2c2a2a;
+}

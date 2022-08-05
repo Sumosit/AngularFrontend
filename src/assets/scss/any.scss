@@ -1,0 +1,18 @@
+.us-none {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.oy-auto {
+  overflow-y: auto;
+  -ms-overflow-y: auto;
+}
+
+.c-pointer {
+  cursor: pointer;
+}
+.t-ellipsis {
+  text-overflow: ellipsis;
+}

@@ -1,0 +1,251 @@
+@import "~assets/scss/colors";
+
+:host {
+  height: 100vh;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  display: -moz-box;
+  align-items: center;
+  -webkit-align-items: center;
+  justify-content: center;
+  -webkit-justify-content: center;
+}
+
+.chat-field {
+  width: 1000px;
+  height: 850px;
+  max-height: 1024px;
+  margin: auto;
+
+  .chat-left, .chat-right {
+    width: 200px;
+
+    .chat-account {
+      cursor: pointer;
+      position: relative;
+      height: 168px;
+      width: 168px;
+      min-height: 168px;
+      color: white;
+      border: 2px solid $pink;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+
+      .chat-you, .chat-rec {
+
+      }
+    }
+  }
+
+  .chat-left {
+  }
+
+  .chat-right {
+  }
+
+  .chat {
+    position: relative;
+    border: 1px solid $pink;
+    background: $black;
+
+    .chat-messages {
+      padding: 10px 10px;
+
+      .c-message-left {
+        background: $pink1;
+
+        > div {
+          text-align: left;
+        }
+      }
+
+      .c-message-right {
+        align-self: flex-end;
+        align-items: flex-start;
+        background: $pink2;
+
+        > div {
+          text-align: left;
+        }
+      }
+
+      .c-message-left, .c-message-right {
+        margin-top: 6px;
+        padding: 20px 20px;
+
+        .c-message-imgs {
+          width: 320px;
+
+          .c-message-img {
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .c-message-text {
+          white-space: pre-wrap;
+          word-break: break-word;
+        }
+
+        > div {
+          width: auto;
+
+          &:nth-child(2) {
+            margin-top: 4px;
+          }
+        }
+      }
+    }
+
+    .chat-form {
+      padding: 10px;
+
+      .c-message-inst {
+
+        svg {
+          cursor: pointer;
+          width: 16px;
+          height: 16px;
+
+          &:hover {
+            path {
+              transition: all 0.3s;
+              -webkit-transition: all 0.3s;
+              -moz-transition: all 0.3s;
+              -ms-transition: all 0.3s;
+              -o-transition: all 0.3s;
+              fill: $pink;
+            }
+          }
+
+          path {
+            fill: $pink3;
+          }
+        }
+      }
+
+      .chat-input {
+        margin-top: 4px;
+        height: 40px;
+
+        textarea {
+          resize: none;
+          padding: 10px;
+          width: 100%;
+          height: 100%;
+          background: $black;
+          border: 1px solid $pink;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.file-drag {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: $black1;
+  color: white;
+}
+
+.modal-upload-field {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: $black2;
+
+  .modal-upload {
+    padding: 16px;
+    width: fit-content;
+    height: fit-content;
+    border: 2px solid $pink;
+    background: $black2;
+
+    .c-message-imgs {
+      width: 260px;
+
+      .c-message-img {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border: 1px solid $pink3;
+      }
+    }
+  }
+
+  .chat-input {
+    margin-top: 10px;
+    height: 40px;
+
+    input {
+      width: 100%;
+      height: 100%;
+      padding: 0 10px;
+      background: $black;
+      border: 1px solid $pink;
+      color: white;
+    }
+  }
+}
+
+.modal-media {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: $black2;
+
+  * {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+
+  .modal_media-options {
+    cursor: pointer;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+
+    svg {
+
+      &:hover {
+        path {
+          transition: all 0.3s;
+          -webkit-transition: all 0.3s;
+          -moz-transition: all 0.3s;
+          -ms-transition: all 0.3s;
+          -o-transition: all 0.3s;
+          fill: $pink;
+        }
+      }
+
+      path {
+        fill: $pink3;
+      }
+    }
+  }
+
+  .modal-media-img {
+    cursor: pointer;
+    width: auto;
+    height: auto;
+    max-height: 78vh;
+  }
+}
