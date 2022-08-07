@@ -9,28 +9,18 @@ import {MessageInterface} from "@shared/interfaces/message-interface";
 })
 export class ChatService {
 
-  messages: MessageInterface[] = [
-    {
-      message: '',
-      imgIds: ['123'],
-      user: {
-        id: 0,
-        username: '',
-        role: []
-      },
-      id: 0
-    }
-  ];
+  messages: MessageInterface[] | any = [];
 
   constructor(public http: HttpClient) {
   }
 
   loadChatMessages(id1: number, id2: number) {
-    let result: any = null
+    let result: any = []
     let qwe = this.getChatMessages(id1, id2).pipe(take(1)).subscribe((data) => {
       if (data) {
         result = data
         this.messages = result;
+        console.log(this.messages);
         qwe?.unsubscribe();
       }
     });

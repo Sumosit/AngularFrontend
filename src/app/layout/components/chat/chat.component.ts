@@ -2,13 +2,12 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {environment} from "@environment/environment";
 import {Stomp, StompSubscription} from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
-import {HttpClient, HttpEventType, HttpResponse} from "@angular/common/http";
+import {HttpClient, HttpEventType, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {ChatService} from "@layout/components/chat/chat.service";
 import {Observable, Subscription, take} from "rxjs";
 import {MessageInterface} from "@shared/interfaces/message-interface";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {FileUploadService} from "@shared/services/file-upload.service";
-
 
 @Component({
   selector: 'app-chat',
@@ -41,6 +40,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   modalMediaLink: string = '';
   modalImgId: string = '';
   fileDrag: boolean = false;
+  finalUpload = false
 
 
   constructor(public http: HttpClient,
@@ -60,6 +60,10 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   get chatMessage() {
     return this.formChat.controls['chatMessage'].value;
+  }
+
+  getBackendUrl() {
+    return environment.backend
   }
 
   chooseUser(id: number) {
@@ -83,7 +87,12 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   subscribeToChat(id: number, id2: number) {
-    const socket = new SockJS('http://localhost:8080/gs-guide-websocket');
+    const socket = new SockJS(environment.sockjs_url, {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT'
+    });
     this.stompClient = Stomp.over(socket);
     this.stompClient.debug = function () {
     };
@@ -97,8 +106,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         // console.log(JSON.parse(hello.body));
         let message: MessageInterface = JSON.parse(hello.body)
         message.imgIds = message.imgIds ?? [];
-        _this.saveMessage(message);
-        console.log(hello.body)
+        _this.chatService.messages.push(message);
         setTimeout(() => {
           // @ts-ignore
           document.getElementById('chatMessage').scrollTop = document.getElementById('chatMessage').scrollHeight
@@ -166,10 +174,10 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   sendStompClient(message: string, images: any) {
     this.formChat.reset();
+
     if (message.length > 1) {
       this.stompClient.send(
-        '/app/chat/' + this.you + '/' + this.recipient,
-        {},
+        '/app/chat/' + this.you + '/' + this.recipient, {},
         JSON.stringify({
           message: message,
           imgIds: images
@@ -179,6 +187,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   saveMessage(message: MessageInterface) {
+    console.log(message)
     this.chatService.messages.push(message);
   }
 
@@ -201,13 +210,15 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   selectFile(event: any): void {
     this.selectedFiles = event.target.files;
-    if (this.selectedFiles) {
-      setTimeout(() => {
-        // @ts-ignore
-        document.getElementById("images-input").focus();
-      }, 500)
-    }
-    this.upload();
+    // if (this.selectedFiles) {
+    //   setTimeout(() => {
+    //     // @ts-ignore
+    //     document.getElementById("images-input").focus();
+    //   }, 500)
+    // }
+    setTimeout(() => {
+      this.upload();
+    }, 500)
   }
 
   clearFiles() {
@@ -215,57 +226,32 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.filesUploaded = [];
   }
 
+  getProgress(i: number) {
+    return this.progress[i];
+  }
+
   upload(): void {
-    let final = 0;
-    this.progress = [];
-    let progress = 0;
-    let result: any[] = [];
-    if (this.selectedFiles) {
-      const files: File[] = [];
-      for (let i = 0; i < this.selectedFiles.length; i++) {
-        files.push(this.selectedFiles[i]);
-      }
-      for (let i = 0; i < files.length; i++) {
-        // console.log(files[i])
-        if (files[i]) {
-          this.currentFile = files[i];
-          let qwe = this.uploadService.upload(this.currentFile).subscribe(
-            (event: any) => {
-              // console.log(final);
-              if (event.type === HttpEventType.UploadProgress) {
-                progress = Math.round(100 * event.loaded / event.total)
-                this.progress.push(progress);
-                if (i === files.length - 1 && progress === 100) {
-                  final = 1;
-                }
-              } else if (event instanceof HttpResponse) {
-                // console.log(event.body[0])
-                this.filesUploaded.push(event.body[0])
-                result.push(event.body[0])
-                this.fileInfos = this.uploadService.getFiles();
-                if (i === files.length - 1) {
-                  if (final === 1) {
-                    qwe?.unsubscribe();
-                    this.fileDrag = false;
-                  }
-                }
-              }
-            },
-            (err: any) => {
-              console.log(err);
-              this.progress = []
-              progress = 0;
-              if (err.error && err.error.message) {
-                // this.message = err.error.message;
-              } else {
-                // this.message = 'Could not upload the file!';
-              }
-              this.currentFile = undefined;
-            });
+    this.progress = 0;
+    this.currentFile = this.selectedFiles.item(0);
+    // console.log(this.currentFile);
+    this.uploadService.upload(this.currentFile).subscribe(
+      event => {
+        // console.log(event);
+        if (event.type === HttpEventType.UploadProgress) {
+          // @ts-ignore
+          this.progress = Math.round(100 * event.loaded / event.total);
+
+        } else if (event instanceof HttpResponse) {
+          console.log(event.body.message)
+          this.fileInfos = this.uploadService.getFiles();
         }
-      }
-      // this.selectedFiles = undefined;
-    }
+      },
+      err => {
+        // console.log(err)
+        this.progress = 0;
+        this.currentFile = undefined;
+      });
+    this.selectedFiles = undefined;
   }
 
   ngOnDestroy(): void {

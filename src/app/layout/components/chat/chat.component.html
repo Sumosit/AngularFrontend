@@ -17,13 +17,13 @@
            class="b-4 f-col f-none"
            [ngClass]="{
            'c-message-right f-ne': message.user?.id === you,
-           'c-message-left a_self-start': message.user?.id === recipient}">
+           'c-message-left a_self-start': message.user?.id !== you}">
         <div class="c-message-imgs f-nn f-wrap gap-10" *ngIf="message?.imgIds.length > 0">
           <div class="c-message-img b-12" *ngFor="let img of message.imgIds; index as i"
                [id]="img"
                (click)="openMedia(img)"
                [ngStyle]="{
-             'background': 'url(http://localhost:8080/files/' + img + ') center center',
+             'background': 'url('+getBackendUrl()+'files/' + img + ') center center',
              'background-repeat': 'no-repeat',
              'background-size': 'cover',
              'grid-area': 'img' + i,
@@ -78,7 +78,7 @@
              'grid-area': 'img' + i,
              'height': i === 0 ? '200px' : '80px',
              'width': i === 0 ? '100%' : '80px',
-             'background': 'url(http://localhost:8080/files/' + filesUploaded?.[i] + ') center center',
+             'background': 'url('+getBackendUrl()+'files/' + filesUploaded?.[i] + ') center center',
              'background-repeat': 'no-repeat',
              'background-size': 'cover'
              }">
@@ -98,12 +98,12 @@
   </div>
 </div>
 
-<ng-template #fileDragTemp>
-  <label class="file-drag f-cc gap-4" for="file-drag"
-         (dragover)="onDragOver($event)"
-         (dragleave)="fileDrag = false"
-         (drop)="onDropSuccess($event)">
-    <span>Drag and drop file here</span>
+  <ng-template #fileDragTemp>
+    <label class="file-drag f-cc gap-4" for="file-drag"
+           (dragover)="onDragOver($event)"
+           (dragleave)="fileDrag = false"
+           (drop)="onDropSuccess($event)">
+      <span>Drag and drop file here</span>
     <svg class="svg" (click)="fileDrag = false" xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="20"
          height="20">
       <path
@@ -120,7 +120,7 @@
      *ngIf="modalMedia"
      (click)="modalMedia = false">
   <div class="modal_media-options f-nn f-col gap-10" (click)="$event.stopPropagation()">
-    <a [href]="'http://localhost:8080/files/' + modalMediaLink">
+    <a [href]="getBackendUrl()+'files/' + modalMediaLink">
       <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="20" height="20">
         <path
           d="M9.878,18.122a3,3,0,0,0,4.244,0l3.211-3.211A1,1,0,0,0,15.919,13.5l-2.926,2.927L13,1a1,1,0,0,0-1-1h0a1,1,0,0,0-1,1l-.009,15.408L8.081,13.5a1,1,0,0,0-1.414,1.415Z"/>
@@ -140,5 +140,5 @@
        [ngStyle]="{
        left: getWidth()
        }"
-       [src]="'http://localhost:8080/files/' + modalMediaLink"/>
+       [src]="getBackendUrl()+'/files/' + modalMediaLink"/>
 </div>

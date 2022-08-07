@@ -1,3 +1,6 @@
+Сайт работает
+# https://62ecb81c1a3718000882a941--effervescent-dusk-cf7920.netlify.app/chat
+
 # PegieFront
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.0.

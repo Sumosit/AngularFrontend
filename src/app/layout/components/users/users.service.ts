@@ -20,7 +20,8 @@ export class UsersService {
 
   addUser(username: string): Observable<UserInterface> {
     const httpOptions: any = {
-      headers: new HttpHeaders({'Content-Type': 'application/json'})
+      headers: new HttpHeaders({'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'})
     }
     // @ts-ignore
     return this.http.post(environment.backend + "api/users/add",
@@ -29,7 +30,8 @@ export class UsersService {
 
   addRole(id: string, role: string) {
     const httpOptions: any = {
-      headers: new HttpHeaders({'Content-Type': 'application/json'})
+      headers: new HttpHeaders({'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'})
     }
     return this.http.post(environment.backend + "api/users/add/role",
       JSON.stringify({id: id, message: role}), httpOptions)
