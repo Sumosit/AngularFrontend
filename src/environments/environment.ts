@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  backend: 'http://localhost:8080/',
-  sockjs_url: 'http://localhost:8080/gs-guide-websocket',
+  backend: 'https://morning-bayou-96483.herokuapp.com/',
+  sockjs_url: 'https://morning-bayou-96483.herokuapp.com/gs-guide-websocket',
 };

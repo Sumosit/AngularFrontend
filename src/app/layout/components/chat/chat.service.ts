@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {take} from "rxjs";
 import {environment} from "@environment/environment";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {MessageInterface} from "@shared/interfaces/message-interface";
 
 @Injectable({
@@ -35,7 +35,15 @@ export class ChatService {
   }
 
   getChatMessages(id1: number, id2: number) {
-    return this.http.get(environment.backend + 'api/chat/messages/' + id1 + '/' + id2)
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT'
+
+    })
+    // @ts-ignore
+    return this.http.get(environment.backend + 'api/chat/messages/' + id1 + '/' + id2, headers)
   }
 
   clearMessage() {

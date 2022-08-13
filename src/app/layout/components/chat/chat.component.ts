@@ -87,15 +87,14 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   subscribeToChat(id: number, id2: number) {
-    const socket = new SockJS(environment.sockjs_url, {
-      'Content-Type': 'application/json',
+    let headers = new HttpHeaders({
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT'
     });
+    const socket = new SockJS(environment.sockjs_url);
+
     this.stompClient = Stomp.over(socket);
-    this.stompClient.debug = function () {
-    };
+    // this.stompClient.debug = function () {
+    // };
 
     const _this = this;
     this.stompClient.connect({}, function (frame: string) {
